@@ -30,8 +30,8 @@ const table = new Table({
   },
 });
 
-function test(input) {
-  for (let i = 0; i < ITERATIONS; i++) {
+function test(input, iterations) {
+  for (let i = 0; i < iterations; i++) {
     parse(input, {
       sourceType: "script",
 
@@ -60,12 +60,18 @@ const files = [
   './fixtures/react-with-addons.js',
 ];
 
+// warmup cache
+files.forEach((file) => {
+  const code = fs.readFileSync(file, 'utf-8');
+  test(code, 1);
+});
+
 const results = [];
 
 files.forEach((file) => {
-  const code = fs.readFileSync('./fixtures/jquery.js', 'utf-8');
+  const code = fs.readFileSync(file, 'utf-8');
   const start = Date.now();
-  const result = test(code);
+  test(code, ITERATIONS);
   const end = Date.now();
   const run = (end - start) / ITERATIONS;
 
