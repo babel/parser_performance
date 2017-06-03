@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "babylon": "^6.12.0",
+    "babylon": "^7.0.0-beta",
     "cli-table": "^0.3.1"
   }
 }

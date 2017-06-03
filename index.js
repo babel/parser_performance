@@ -2,7 +2,7 @@ const parse = require('babylon').parse;
 const fs = require('fs');
 const Table  = require("cli-table");
 
-const ITERATIONS = 100;
+const ITERATIONS = 10;
 
 const table = new Table({
   head: ["name", "run"],
@@ -46,7 +46,8 @@ function test(input, iterations) {
         "functionSent",
         "dynamicImport",
         "jsx",
-        "flow"
+        "flow",
+        "estree"
       ]
     });
   }
