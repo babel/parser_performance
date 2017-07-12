@@ -45,20 +45,26 @@ function test(input, iterations) {
         "functionBind",
         "functionSent",
         "dynamicImport",
+        "numericSeparator",
+        "optionalChaining",
+        "importMeta",
+        "bigInt",
         "jsx",
         "flow",
-        "estree"
+        // "estree"
       ]
     });
   }
 }
 
 const files = [
-  './fixtures/angular.js',
   './fixtures/backbone.js',
-  './fixtures/ember.debug.js',
   './fixtures/jquery.js',
+  './fixtures/babylon.js',
+  './fixtures/babylon-node8.js',
+  './fixtures/angular.js',
   './fixtures/react-with-addons.js',
+  './fixtures/ember.debug.js',
 ];
 
 // warmup cache
