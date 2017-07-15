@@ -19,8 +19,8 @@ function test(parse, plugins, input, iterations) {
 const files = [
   './fixtures/backbone.js',
   './fixtures/jquery.js',
-  './fixtures/babylon.js',
-  './fixtures/babylon-node8.js',
+  './fixtures/babylon-src.js',
+  './fixtures/babylon-dist.js',
   './fixtures/angular.js',
   './fixtures/react-with-addons.js',
   './fixtures/ember.debug.js',
