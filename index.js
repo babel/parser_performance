@@ -1,11 +1,52 @@
-const parse = require('babylon').parse;
+const babylonParse = require('babylon').parse;
+const acornParse = require('acorn').parse;
 const fs = require('fs');
 const Table  = require("cli-table");
 
-const ITERATIONS = 10;
+console.log(`Node: ${process.version}`);
+
+const ITERATIONS = 20;
+
+function test(parse, plugins, input, iterations) {
+  for (let i = 0; i < iterations; i++) {
+    parse(input, {
+      sourceType: "script",
+      plugins: plugins
+    });
+  }
+}
+
+const files = [
+  './fixtures/backbone.js',
+  './fixtures/jquery.js',
+  './fixtures/babylon.js',
+  './fixtures/babylon-node8.js',
+  './fixtures/angular.js',
+  './fixtures/react-with-addons.js',
+  './fixtures/ember.debug.js',
+];
+
+const plugins = [
+  "doExpressions",
+  "objectRestSpread",
+  "decorators",
+  "classProperties",
+  "exportExtensions",
+  "asyncGenerators",
+  "functionBind",
+  "functionSent",
+  "dynamicImport",
+  "numericSeparator",
+  "optionalChaining",
+  "importMeta",
+  "bigInt",
+  "jsx",
+  "flow",
+  // "estree"
+];
 
 const table = new Table({
-  head: ["name", "run"],
+  head: ["fixture", "babylon", "acorn"],
   chars: {
     top: "",
     "top-mid": "" ,
@@ -30,66 +71,33 @@ const table = new Table({
   },
 });
 
-function test(input, iterations) {
-  for (let i = 0; i < iterations; i++) {
-    parse(input, {
-      sourceType: "script",
-
-      plugins: [
-        "doExpressions",
-        "objectRestSpread",
-        "decorators",
-        "classProperties",
-        "exportExtensions",
-        "asyncGenerators",
-        "functionBind",
-        "functionSent",
-        "dynamicImport",
-        "numericSeparator",
-        "optionalChaining",
-        "importMeta",
-        "bigInt",
-        "jsx",
-        "flow",
-        // "estree"
-      ]
-    });
-  }
-}
-
-const files = [
-  './fixtures/backbone.js',
-  './fixtures/jquery.js',
-  './fixtures/babylon.js',
-  './fixtures/babylon-node8.js',
-  './fixtures/angular.js',
-  './fixtures/react-with-addons.js',
-  './fixtures/ember.debug.js',
-];
+const results = [];
 
 // warmup cache
 files.forEach((file) => {
   const code = fs.readFileSync(file, 'utf-8');
-  test(code, 1);
+  [babylonParse, acornParse].forEach((parseFn, i) => {
+    test(parseFn, i === 0 ? plugins: {}, code, 1);
+  });
 });
-
-const results = [];
 
 files.forEach((file) => {
   const code = fs.readFileSync(file, 'utf-8');
-  const start = Date.now();
-  test(code, ITERATIONS);
-  const end = Date.now();
-  const run = (end - start) / ITERATIONS;
-
-  results.push({ file, run });
+  const runs = [];
+  [babylonParse, acornParse].forEach((parseFn, i) => {
+    const start = Date.now();
+    test(parseFn, i === 0 ? plugins: {}, code, ITERATIONS);
+    const end = Date.now();
+    runs[i] = (end - start) / ITERATIONS;
+  });
+  results.push({ file, babylon: runs[0], acorn: runs[1] });
 });
-
 
 results.forEach(function (result, i) {
   let row = [
     result.file,
-    Math.round(result.run) + "ms",
+    (result.babylon.toFixed(1) + "ms").padStart(7),
+    (result.acorn.toFixed(1) + "ms").padStart(7),
   ];
 
   table.push(row);
