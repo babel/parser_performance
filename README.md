@@ -19,6 +19,9 @@ Check the [performance](https://github.com/babel/babylon/issues?utf8=%E2%9C%93&q
 
 Microbenchmarks don't help that much, should test the real thing? (Also I don't know what I'm talking about)
 
+- Caching, `Set.has` vs. `[].indexOf(val)`, hoisting, GC issues
+- Make sure node shapes are the same (should be automated) https://github.com/babel/notes/issues/9
+
 ## Checking Performance
 
 ### Install/Use Node 8
