@@ -5,6 +5,8 @@
 ## Run
 
 ```sh
+git clone git@github.com:babel/babylon_performance.git
+git clone git@github.com:babel/babylon.git
 npm install
 npm t
 ```
@@ -36,7 +38,11 @@ It's a chrome Extension that helps automatically open the devtools when running 
 
 Point node to the babylon script and pass in a file to parse
 
+> In this case I am running node in `babylon/` with `babylon_performance/` in sibling folder
+
 ```sh
+cd babylon
+
 # node --inspect-brk script.js
 node --inspect-brk ./bin/babylon.js ../babylon_performance/fixtures/angular.js
 ```
