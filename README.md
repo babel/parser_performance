@@ -15,7 +15,11 @@ npm t
 
 Check the [performance](https://github.com/babel/babylon/issues?utf8=%E2%9C%93&q=label%3Aperformance%20is%3Aboth) label in the babylon repo for some examples.
 
-## Checking for performance issues
+## Perf Tips
+
+Microbenchmarks don't help that much, should test the real thing? (Also I don't know what I'm talking about)
+
+## Checking Performance
 
 ### Install/Use Node 8
 
@@ -31,6 +35,30 @@ node -v
 > https://chrome.google.com/webstore/detail/nodejs-v8-inspector-manag/gnhhdgbaldcilmgcpfddgdbkhjohddkj?hl=en
 
 It's a chrome Extension that helps automatically open the devtools when running --inspect
+
+### Using `node --prof`
+
+> https://nodejs.org/en/docs/guides/simple-profiling/
+
+```sh
+node --prof script.js
+node --prof-process isolate*.log
+# node --prof-process isolate*.log > out.txt
+```
+
+With babylon:
+
+```sh
+node --prof ./node_modules/babylon/bin/babylon.js fixtures/ember.debug.js
+node --prof-process isolate*.log
+```
+
+### Use `node --trace-opt`
+
+```sh
+node --trace-opt script.js | grep myFunc
+node --trace-opt ./node_modules/babylon/bin/babylon.js fixtures/ember.debug.js
+```
 
 ### Use `node --inspect-brk`
 
@@ -62,3 +90,13 @@ Then click "Start"
 Wait a little bit and click "Stop", and you will be redirect to this screen
 
 ![Imgur](http://i.imgur.com/9wYUfXV.png)
+
+## Some Links
+
+- https://jsperf.com/
+- https://esbench.com/bench
+- https://github.com/vhf/v8-bailout-reasons
+- https://community.risingstack.com/how-to-find-node-js-performance-optimization-killers/
+- https://github.com/GoogleChrome/devtools-docs/issues/53
+- https://gist.github.com/kevincennis/0cd2138c78a07412ef21
+
