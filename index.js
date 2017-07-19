@@ -103,7 +103,7 @@ files.forEach((file) => {
     const start = Date.now();
     test(parsers[i], i === 'babylon' ? plugins: {}, code, ITERATIONS);
     const avg = (Date.now() - start) / ITERATIONS;
-    result.push(avg.toFixed(1) + "ms").padStart(7);
+    result.push(avg.toFixed(1) + "ms");
   }
   table.push(result);
 });
