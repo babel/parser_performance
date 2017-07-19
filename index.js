@@ -1,5 +1,6 @@
 const babylonParse = require('babylon').parse;
 const acornParse = require('acorn').parse;
+const esprimaParse = require('esprima').parse;
 const fs = require('fs');
 const Table  = require("cli-table");
 
@@ -45,7 +46,7 @@ const plugins = [
 ];
 
 const table = new Table({
-  head: ["fixture", "babylon", "acorn"],
+  head: ["fixture", "babylon", "acorn", "esprima"],
   chars: {
     top: "",
     "top-mid": "" ,
@@ -75,7 +76,7 @@ const results = [];
 // warmup cache
 files.forEach((file) => {
   const code = fs.readFileSync(file, 'utf-8');
-  [babylonParse, acornParse].forEach((parseFn, i) => {
+  [babylonParse, acornParse, esprimaParse].forEach((parseFn, i) => {
     test(parseFn, i === 0 ? plugins: {}, code, 1);
   });
 });
@@ -83,13 +84,13 @@ files.forEach((file) => {
 files.forEach((file) => {
   const code = fs.readFileSync(file, 'utf-8');
   const runs = [];
-  [babylonParse, acornParse].forEach((parseFn, i) => {
+  [babylonParse, acornParse, esprimaParse].forEach((parseFn, i) => {
     const start = Date.now();
     test(parseFn, i === 0 ? plugins: {}, code, ITERATIONS);
     const end = Date.now();
     runs[i] = (end - start) / ITERATIONS;
   });
-  results.push({ file, babylon: runs[0], acorn: runs[1] });
+  results.push({ file, babylon: runs[0], acorn: runs[1], esprima: runs[2] });
 });
 
 results.forEach(function (result, i) {
