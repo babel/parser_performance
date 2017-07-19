@@ -6,9 +6,7 @@
 
 ```sh
 git clone git@github.com:babel/babylon_performance.git
-git clone git@github.com:babel/babylon.git
-npm install
-npm t
+npm it
 ```
 
 ## Performance PRs
