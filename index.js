@@ -1,20 +1,13 @@
 const babylonParse = require('babylon').parse;
 const acornParse = require('acorn').parse;
+const esprimaParse = require('esprima').parse;
 const fs = require('fs');
 const Table  = require("cli-table");
 
-console.log(`Node: ${process.version}`);
+
+/* START CONFIG */
 
 const ITERATIONS = 20;
-
-function test(parse, plugins, input, iterations) {
-  for (let i = 0; i < iterations; i++) {
-    parse(input, {
-      sourceType: "script",
-      plugins: plugins
-    });
-  }
-}
 
 const files = [
   './fixtures/backbone.js',
@@ -44,8 +37,33 @@ const plugins = [
   // "estree"
 ];
 
+const parsers = {
+  babylon: babylonParse,
+  acorn: acornParse,
+  esprima: esprimaParse
+};
+
+/* END CONFIG */
+
+console.log(`Node: ${process.version}`);
+console.log(`ITERATIONS: ${ITERATIONS}`);
+
+const head = ["fixture"];
+for (let i in parsers) {
+  head.push(i);
+}
+
+function test(parse, plugins, input, iterations) {
+  for (let i = 0; i < iterations; i++) {
+    parse(input, {
+      sourceType: "script",
+      plugins: plugins
+    });
+  }
+}
+
 const table = new Table({
-  head: ["fixture", "babylon", "acorn"],
+  head,
   chars: {
     top: "",
     "top-mid": "" ,
@@ -70,36 +88,24 @@ const table = new Table({
   },
 });
 
-const results = [];
-
 // warmup cache
 files.forEach((file) => {
   const code = fs.readFileSync(file, 'utf-8');
-  [babylonParse, acornParse].forEach((parseFn, i) => {
-    test(parseFn, i === 0 ? plugins: {}, code, 1);
-  });
+  for (let i in parsers) {
+    test(parsers[i], i === 'babylon' ? plugins: {}, code, 1);
+  }
 });
 
 files.forEach((file) => {
   const code = fs.readFileSync(file, 'utf-8');
-  const runs = [];
-  [babylonParse, acornParse].forEach((parseFn, i) => {
+  const result = [ file ];
+  for (let i in parsers) {
     const start = Date.now();
-    test(parseFn, i === 0 ? plugins: {}, code, ITERATIONS);
-    const end = Date.now();
-    runs[i] = (end - start) / ITERATIONS;
-  });
-  results.push({ file, babylon: runs[0], acorn: runs[1] });
-});
-
-results.forEach(function (result, i) {
-  let row = [
-    result.file,
-    (result.babylon.toFixed(1) + "ms").padStart(7),
-    (result.acorn.toFixed(1) + "ms").padStart(7),
-  ];
-
-  table.push(row);
+    test(parsers[i], i === 'babylon' ? plugins: {}, code, ITERATIONS);
+    const avg = (Date.now() - start) / ITERATIONS;
+    result.push(avg.toFixed(1) + "ms");
+  }
+  table.push(result);
 });
 
 console.log(table.toString());
