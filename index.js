@@ -7,7 +7,7 @@ const Table  = require("cli-table");
 
 /* START CONFIG */
 
-const ITERATIONS = 20;
+const ITERATIONS = 10;
 
 const files = [
   './fixtures/backbone.js',
@@ -57,7 +57,15 @@ function test(parse, plugins, input, iterations) {
   for (let i = 0; i < iterations; i++) {
     parse(input, {
       sourceType: "script",
-      plugins: plugins
+      plugins: plugins,
+
+      // acorn
+      locations: true,
+      onComment: () => {},
+
+      // esprima
+      loc: true,
+      comment: true,
     });
   }
 }
