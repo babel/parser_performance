@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "acorn": "5.1.1",
-    "babylon": "7.0.0-beta.16",
+    "babylon": "7.0.0-beta.17",
     "cli-table": "^0.3.1",
     "esprima": "4.0.0"
   }
