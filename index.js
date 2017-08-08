@@ -7,7 +7,7 @@ const Table  = require("cli-table");
 
 /* START CONFIG */
 
-const ITERATIONS = 10;
+const ITERATIONS = 20;
 
 const files = [
   './fixtures/backbone.js',
