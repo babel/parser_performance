@@ -38,10 +38,12 @@ files.forEach(file => {
     const { parse, options } = parsers[i];
 
     // warmup
-    test(parse, options, code, 5);
-
-    // Just to be sure twice
+    test(parse, options, code, 1);
     global.gc();
+  }
+  for (let i in parsers) {
+    const { parse, options } = parsers[i];
+
     global.gc();
     let oldSize = process.memoryUsage();
 
