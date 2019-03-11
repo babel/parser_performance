@@ -34,7 +34,7 @@ files.forEach(file => {
 
     // warmup
     test(parse, options, code, 5);
-
+    global.gc();
     suite.add(i, () => {
       parse(code, options);
     });
