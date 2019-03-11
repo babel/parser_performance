@@ -1,72 +1,14 @@
-const babylonParse = require("@babel/parser").parse;
-const acornParse = require("acorn").parse;
-const esprimaParse = require("esprima").parse;
-const cherowParse = require("cherow").parse;
 const fs = require("fs");
 const Table = require("cli-table");
 const Benchmark = require("benchmark");
-
-/* START CONFIG */
-
-const files = [
-  "./fixtures/ember.debug.js",
-  "./fixtures/jquery.js",
-  "./fixtures/angular.js",
-  "./fixtures/babylon-dist.js",
-  "./fixtures/backbone.js",
-  "./fixtures/react-with-addons.js"
-];
-
-const plugins = [
-  "doExpressions",
-  "objectRestSpread",
-  ["decorators", { decoratorsBeforeExport: true }],
-  "classProperties",
-  "exportExtensions",
-  "asyncGenerators",
-  "functionBind",
-  "functionSent",
-  "dynamicImport",
-  "numericSeparator",
-  "optionalChaining",
-  "importMeta",
-  "bigInt",
-  "jsx",
-  "flow"
-  //"estree"
-];
-
-const parsers = {
-  acorn: acornParse,
-  babylon: babylonParse,
-  cherow: cherowParse,
-  esprima: esprimaParse
-};
-
-/* END CONFIG */
+const { parsers, files } = require("./config");
+const { test } = require("./util");
 
 console.log(`Node: ${process.version}`);
 
 const head = ["fixture"];
 for (let i in parsers) {
   head.push(i);
-}
-
-function test(parse, plugins, input, iterations) {
-  for (let i = 0; i < iterations; i++) {
-    parse(input, {
-      sourceType: "script",
-      //plugins: plugins,
-
-      // acorn
-      locations: true,
-      onComment: () => {},
-
-      // esprima
-      loc: true,
-      comment: true
-    });
-  }
 }
 
 const table = new Table({
@@ -76,60 +18,46 @@ const table = new Table({
   }
 });
 
-// warmup cache
-files.forEach(file => {
-  const code = fs.readFileSync(file, "utf-8");
-  for (let i in parsers) {
-    test(parsers[i], i === "babylon" ? plugins : {}, code, 1);
-  }
-});
+if (!global.gc) {
+  console.error(
+    "Garbage collection unavailable.  Pass --expose-gc " +
+      "when launching node to enable forced garbage collection."
+  );
+  process.exit();
+}
 
 files.forEach(file => {
-  if (global.gc) {
-    global.gc();
-  } else {
-    console.warn(
-      "Garbage collection unavailable.  Pass --expose-gc " +
-        "when launching node to enable forced garbage collection."
-    );
-  }
   const code = fs.readFileSync(file, "utf-8");
   const suite = new Benchmark.Suite(file.replace(/\.\/fixtures\//, ""));
   for (let i in parsers) {
-    const parser = parsers[i];
-    const options = {
-      sourceType: "script",
-      //plugins: i === 'babylon' ? plugins: {},
+    const { parse, options } = parsers[i];
 
-      // acorn
-      locations: true,
-      onComment: () => {},
+    // warmup
+    test(parse, options, code, 5);
 
-      // esprima
-      loc: true,
-      comment: true
-    };
-
-    suite.add(
-      i,
-      () => {
-        parser(code, options);
-      }
-    );
+    suite.add(i, () => {
+      parse(code, options);
+    });
   }
   const result = [suite.name];
   suite.on("cycle", function(event) {
-    const bench = event.target;
-    const factor = bench.hz < 100 ? 100 : 1;
-    const msg = `${Math.round(bench.hz * factor) /
-      factor} ops/sec ±${Math.round(bench.stats.rme * 100) /
-      100}% (mean ${Math.round(bench.stats.mean * 1000)}ms)`;
-    result.push(msg);
+    {
+      // separate scope so we can cleanup all this afterwards
+      const bench = event.target;
+      const factor = bench.hz < 100 ? 100 : 1;
+      const msg = `${Math.round(bench.hz * factor) /
+        factor} ops/sec ±${Math.round(bench.stats.rme * 100) /
+        100}% (${Math.round(bench.stats.mean * 1000)}ms)`;
+      result.push(msg);
+    }
+    global.gc();
   });
 
-  console.log(`Running test suite for ${suite.name} ...`);
+  console.log(`Running benchmark for ${suite.name} ...`);
+  global.gc();
   suite.run({ async: false });
+  global.gc(); // gc is disabled so ensure we run it
   table.push(result);
 });
-
+global.gc(); // gc is disabled so ensure we run it
 console.log(table.toString());

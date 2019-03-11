@@ -6,7 +6,9 @@
 
 ```sh
 git clone git@github.com:babel/babylon_performance.git
-npm it
+yarn
+yarn run test // performance test
+yarn run memory // memory usage test
 ```
 
 ## Performance PRs
@@ -100,4 +102,3 @@ Wait a little bit and click "Stop", and you will be redirect to this screen
 - https://community.risingstack.com/how-to-find-node-js-performance-optimization-killers/
 - https://github.com/GoogleChrome/devtools-docs/issues/53
 - https://gist.github.com/kevincennis/0cd2138c78a07412ef21
-
