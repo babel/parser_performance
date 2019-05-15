@@ -45,9 +45,11 @@ files.forEach(file => {
       // separate scope so we can cleanup all this afterwards
       const bench = event.target;
       const factor = bench.hz < 100 ? 100 : 1;
+      const timeMs = bench.stats.mean * 1000;
+      const time = (timeMs < 10)? `${Math.round(timeMs*1000)/1000}ms` : `${Math.round(timeMs)}ms`;
       const msg = `${Math.round(bench.hz * factor) /
         factor} ops/sec ±${Math.round(bench.stats.rme * 100) /
-        100}% (${Math.round(bench.stats.mean * 1000)}ms)`;
+        100}% (${time})`;
       result.push(msg);
     }
     global.gc();

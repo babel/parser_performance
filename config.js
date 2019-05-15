@@ -4,12 +4,12 @@ const esprimaParse = require("esprima").parse;
 const cherowParse = require("cherow").parse;
 
 exports.files = [
-  "./fixtures/ember.debug.js",
-  "./fixtures/jquery.js",
-  "./fixtures/angular.js",
-  "./fixtures/babylon-dist.js",
-  "./fixtures/backbone.js",
-  "./fixtures/react-with-addons.js"
+  "./fixtures/es5/angular.js",
+  "./fixtures/es5/ember.debug.js",
+  "./fixtures/es5/babylon-dist.js",
+  "./fixtures/es5/jquery.js",
+  "./fixtures/es5/backbone.js",
+  "./fixtures/es5/react-with-addons.js"
 ];
 
 exports.parsers = {
