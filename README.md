@@ -24,12 +24,10 @@ Microbenchmarks don't help that much, should test the real thing? (Also I don't 
 
 ## Checking Performance
 
-### Install/Use Node 8
-
-> Node 8 has a weird UI bug with Profiling atm, so switch to Node 6/7? https://twitter.com/drewml/status/881564816208527364
+### Install/Use Node 12
 
 ```sh
-nvm use 8
+nvm use 12
 node -v
 ```
 
