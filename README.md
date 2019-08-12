@@ -1,11 +1,11 @@
-# babylon_performance
+# parser_performance
 
 > Parses various [fixtures](/fixtures) and outputs parse times over various iterations
 
 ## Run
 
 ```sh
-git clone git@github.com:babel/babylon_performance.git
+git clone git@github.com:babel/parser_performance.git
 yarn
 yarn run test // performance test
 yarn run memory // memory usage test
@@ -47,10 +47,10 @@ node --prof-process isolate*.log
 # node --prof-process isolate*.log > out.txt
 ```
 
-With babylon:
+With @babel/parser:
 
 ```sh
-node --prof ./node_modules/babylon/bin/babylon.js fixtures/ember.debug.js
+node --prof ./node_modules/@babel/parser/bin/babel-parser.js fixtures/es5/ember.debug.js > /dev/null
 node --prof-process isolate*.log
 ```
 
@@ -58,22 +58,22 @@ node --prof-process isolate*.log
 
 ```sh
 node --trace-opt script.js | grep myFunc
-node --trace-opt ./node_modules/babylon/bin/babylon.js fixtures/ember.debug.js
+node --trace-opt ./node_modules/@babel/parser/bin/babel-parser.js fixtures/es5/ember.debug.js
 ```
 
 ### Use `node --inspect-brk`
 
 > https://medium.com/@paul_irish/debugging-node-js-nightlies-with-chrome-devtools-7c4a1b95ae27
 
-Point node to the babylon script and pass in a file to parse
+Point node to the @babel/parser script and pass in a file to parse
 
-> In this case I am running node in `babylon/` with `babylon_performance/` in sibling folder
+> In this case I am running node in `parser` with `parser_performance/` in sibling folder
 
 ```sh
-cd babylon
+cd parser
 
 # node --inspect-brk script.js
-node --inspect-brk ./bin/babylon.js ../babylon_performance/fixtures/angular.js
+node --inspect-brk ./bin/babel-parser.js ../parser_performance/fixtures/es5/angular.js
 ```
 
 If you have install NIM, it should open up chrome and show this view: (if not you can open the url shown in the console yourself)
