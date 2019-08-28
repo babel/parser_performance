@@ -10,17 +10,18 @@ exports.files = [
   "./fixtures/es5/jquery.js",
   "./fixtures/es5/backbone.js",
   "./fixtures/es5/react-with-addons.js",
-  "./fixtures/es6/angular-compiler.js"
+  "./fixtures/es6/angular-compiler.js",
+  "./fixtures/es6/material-ui-core.js",
 ];
 
 exports.parsers = {
   acorn: {
     parse: acornParse,
-    options: { sourceType: "script" }
+    options: { sourceType: "module" }
   },
   babel: {
     parse: babelParse,
-    options: { sourceType: "script" }
+    options: { sourceType: "module" }
   },
   cherow: {
     parse: cherowParse,
