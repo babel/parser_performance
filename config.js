@@ -1,7 +1,7 @@
 const babelParse = require("@babel/parser/new/index").parse;
 const acornParse = require("acorn").parse;
 const esprimaParse = require("esprima").parse;
-const cherowParse = require("cherow").parse;
+const meriyahParse = require("meriyah").parse;
 
 exports.files = [
   "./fixtures/es5/angular.js",
@@ -23,12 +23,12 @@ exports.parsers = {
     parse: babelParse,
     options: { sourceType: "module" }
   },
-  cherow: {
-    parse: cherowParse,
-    options: { sourceType: "script" }
-  },
   esprima: {
     parse: esprimaParse,
-    options: { sourceType: "script" }
-  }
+    options: { sourceType: "module" }
+  },
+  meriyah: {
+    parse: meriyahParse,
+    options: { module: true }
+  },
 };
