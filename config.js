@@ -9,7 +9,8 @@ exports.files = [
   "./fixtures/es5/babylon-dist.js",
   "./fixtures/es5/jquery.js",
   "./fixtures/es5/backbone.js",
-  "./fixtures/es5/react-with-addons.js"
+  "./fixtures/es5/react-with-addons.js",
+  "./fixtures/es6/angular-compiler.js"
 ];
 
 exports.parsers = {
