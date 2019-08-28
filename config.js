@@ -1,7 +1,7 @@
 const babelParse = require("@babel/parser/new/index").parse;
 const acornParse = require("acorn").parse;
 const esprimaParse = require("esprima").parse;
-const meriyahParse = require("meriyah").parse;
+const meriyahParse = require("meriyah").parseModule;
 
 exports.files = [
   "./fixtures/es5/angular.js",
@@ -29,6 +29,6 @@ exports.parsers = {
   },
   meriyah: {
     parse: meriyahParse,
-    options: { module: true }
+    options: {}
   },
 };
