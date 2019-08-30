@@ -25,7 +25,7 @@ exports.parsers = {
   },
   esprima: {
     parse: esprimaParse,
-    options: { sourceType: "module", loc: true }
+    options: { sourceType: "module", loc: true, comment: true, attachComment: true }
   },
   meriyah: {
     parse: meriyahParse,
