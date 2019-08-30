@@ -17,7 +17,7 @@ exports.files = [
 exports.parsers = {
   acorn: {
     parse: acornParse,
-    options: { sourceType: "module" }
+    options: { sourceType: "module", locations: true }
   },
   babel: {
     parse: babelParse,
@@ -25,10 +25,10 @@ exports.parsers = {
   },
   esprima: {
     parse: esprimaParse,
-    options: { sourceType: "module" }
+    options: { sourceType: "module", loc: true }
   },
   meriyah: {
     parse: meriyahParse,
-    options: {}
+    options: { loc: true }
   },
 };
