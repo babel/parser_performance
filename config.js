@@ -47,12 +47,13 @@ const parsers = {
 };
 
 const parserSelection = (function () {
-  if (process.env.DEV_ONLY) {
-    return ["dev"];
-  } else if (process.env.PARSER) {
+  if (process.env.PARSER_ALL) {
+    return Object.keys(parsers);
+  }
+  if (process.env.PARSER) {
     return process.env.PARSER.split(",");
   } else {
-    return Object.keys(parsers);
+    return ["dev"];
   }
 })();
 
