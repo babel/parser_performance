@@ -1,7 +1,7 @@
 const fs = require("fs");
 const Table = require("cli-table");
 const Benchmark = require("benchmark");
-const { parsers, files } = require("./config");
+const { parsers, files, benchmarkOptions } = require("./config");
 const { test } = require("./util");
 
 console.log(`Node: ${process.version}`);
@@ -28,7 +28,7 @@ if (!global.gc) {
 
 files.forEach(file => {
   const code = fs.readFileSync(file, "utf-8");
-  const suite = new Benchmark.Suite(file.replace(/\.\/fixtures\//, ""));
+  const suite = new Benchmark.Suite(file.replace(/\.\/fixtures\//, ""), benchmarkOptions);
   for (let i in parsers) {
     const { parse, options } = parsers[i];
 

@@ -4,6 +4,14 @@
 
 ## Run
 
+### build a production release of babel-parser
+```
+cd babel
+NODE_ENV=production BABEL_ENV=production gulp build-rollup
+```
+
+### Run parser performance
+It is recommended to clone `parser_performance` next to `babel` repository
 ```sh
 git clone git@github.com:babel/parser_performance.git
 yarn
@@ -15,6 +23,14 @@ yarn run memory // memory usage test
 
 Check the [performance](https://github.com/babel/babel/issues?utf8=%E2%9C%93&q=label%3A"area%3A+perf"%20is%3Aboth) label in the babel repo for some examples.
 
+## Performance Test
+```sh
+# Run performance test on ember.js fixture and compared to acorn parser
+FILE=ember PARSER=acorn,dev yarn run test
+
+# Specify a custom babel parser path and run performance test on all files
+BABEL_PARSER_PATH=relative/path/from/parser_performance/to/babel-parser yarn run test
+```
 ## Perf Tips
 
 Microbenchmarks don't help that much, should test the real thing? (Also I don't know what I'm talking about)

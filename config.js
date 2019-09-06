@@ -1,4 +1,7 @@
-const babelParse = require("@babel/parser/new/index").parse;
+const babelDevPath = process.env.BABEL_PARSER_PATH || "../babel/packages/babel-parser";
+
+const babelParse = require("@babel/parser").parse;
+const babelDevParse = require(babelDevPath).parse;
 const acornParse = require("acorn").parse;
 const esprimaParse = require("esprima").parse;
 const meriyahParse = require("meriyah").parseModule;
@@ -12,15 +15,25 @@ exports.files = [
   "./fixtures/es5/react-with-addons.js",
   "./fixtures/es6/angular-compiler.js",
   "./fixtures/es6/material-ui-core.js",
-];
+].filter(file => {
+  return !process.env.FILE || file.includes(process.env.FILE)
+});
 
-exports.parsers = {
+exports.benchmarkOptions = {
+  minSamples: 16000
+};
+
+const parsers = {
   acorn: {
     parse: acornParse,
     options: { sourceType: "module", locations: true }
   },
   babel: {
     parse: babelParse,
+    options: { sourceType: "module" }
+  },
+  dev: {
+    parse: babelDevParse,
     options: { sourceType: "module" }
   },
   esprima: {
@@ -32,3 +45,20 @@ exports.parsers = {
     options: { loc: true }
   },
 };
+
+const parserSelection = (function () {
+  if (process.env.DEV_ONLY) {
+    return ["dev"];
+  } else if (process.env.PARSER) {
+    return process.env.PARSER.split(",");
+  } else {
+    return Object.keys(parsers);
+  }
+})();
+
+exports.parsers = Object.keys(parsers).filter(key => {
+  return parserSelection.includes(key);
+}).reduce((p, key) => {
+  p[key] = parsers[key];
+  return p;
+}, {});
