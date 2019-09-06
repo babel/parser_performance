@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "bootstrap": "git clone git@github.com:babel/babylon.git ../babylon",
-    "test": "node --expose-gc --max-old-space-size=2000 --max-semi-space-size=1500 --noconcurrent_sweeping index.js",
-    "memory": "node --expose-gc --max-old-space-size=2000 --max-semi-space-size=1500 --noconcurrent_sweeping mem.js"
+    "test": "node --expose-gc --max-old-space-size=2000 --max-semi-space-size=1500 --predictable index.js",
+    "memory": "node --expose-gc --max-old-space-size=2000 --max-semi-space-size=1500 --predictable mem.js"
   },
   "author": "",
   "license": "MIT",
@@ -19,6 +19,6 @@
   },
   "devDependencies": {
     "benchmark": "^2.1.4",
-    "microtime": "^2.1.8"
+    "microtime": "^3.0.0"
   }
 }
