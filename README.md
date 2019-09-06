@@ -53,7 +53,7 @@ node -v
 
 It's a chrome Extension that helps automatically open the devtools when running --inspect
 
-### Using `node --prof`
+### Use `node --prof`
 
 > https://nodejs.org/en/docs/guides/simple-profiling/
 
@@ -69,6 +69,19 @@ With @babel/parser:
 node --prof ./node_modules/@babel/parser/bin/babel-parser.js fixtures/es5/ember.debug.js > /dev/null
 node --prof-process isolate*.log
 ```
+
+### Use `npm run cpu-prof`
+
+Node.js 12 introduces [`--cpu-prof`](https://nodejs.org/api/cli.html#cli_cpu_prof) to starts V8 CPU Profiler on start up.
+
+```sh
+# Generate CPU Profile running dev parser on ember,
+# This command will output a cpu profile inside the ./cpuprofile directory, i.e. `CPU.20190906.174010.51327.0.001.cpuprofile`
+PARSER=dev FILE=ember npm run cpu-prof
+
+```
+
+[Load](https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/reference#load) generated cpu profile to Chrome Devtools, and [analyze](https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/reference#analyze) the performance recording.
 
 ### Use `node --trace-opt`
 
