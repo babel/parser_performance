@@ -5,13 +5,16 @@
   "main": "index.js",
   "scripts": {
     "bootstrap": "git clone git@github.com:babel/babylon.git ../babylon",
-    "test": "node --expose-gc --max-old-space-size=2000 --max-semi-space-size=1500 --noconcurrent_sweeping index.js",
-    "memory": "node --expose-gc --max-old-space-size=2000 --max-semi-space-size=1500 --noconcurrent_sweeping mem.js"
+    "cpu-prof": "node --cpu-prof --cpu-prof-dir=./cpuprofile --expose-gc --max-old-space-size=2000 --max-semi-space-size=1500 --predictable index.js",
+    "test": "node --expose-gc --max-old-space-size=2000 --max-semi-space-size=1500 --predictable index.js",
+    "print-bytecode": "node --expose-gc --max-old-space-size=2000 --max-semi-space-size=1500 --predictable --print-bytecode parse.js > parse.bytecode.txt",
+    "print-code": "node --expose-gc --max-old-space-size=2000 --max-semi-space-size=1500 --predictable --print-opt-code --code-comments --redirect-code-traces --redirect-code-traces-to=./parse.asm parse.js",
+    "memory": "node --expose-gc --max-old-space-size=2000 --max-semi-space-size=1500 --predictable mem.js"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@babel/parser": "^7.0.0",
+    "@babel/parser": "^7.6.0",
     "acorn": "^7.0.0",
     "cli-table": "^0.3.1",
     "esprima": "^4.0.1",
@@ -19,6 +22,6 @@
   },
   "devDependencies": {
     "benchmark": "^2.1.4",
-    "microtime": "^2.1.8"
+    "microtime": "^3.0.0"
   }
 }
